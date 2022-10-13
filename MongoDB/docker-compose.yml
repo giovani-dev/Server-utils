@@ -1,0 +1,13 @@
+version: '3.8'
+services:
+  mongo:
+    image: mongo
+    network_mode: bridge
+    container_name: "mongo"
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: ${ROOT_USERNAME}
+      MONGO_INITDB_ROOT_PASSWORD: ${ROOT_PASSWORD}
+    ports:
+      - "27017:27017"
+    volumes:
+      - ./docker/MongoDB:/data/db

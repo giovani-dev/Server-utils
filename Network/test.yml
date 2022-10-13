@@ -1,0 +1,12 @@
+network:
+  ethernets:
+    enp0s6:
+      addresses:
+      - 192.168.15.102/24
+      routes:
+        - to: default
+          via: 192.168.15.1
+      nameservers:
+        addresses: [192.168.15.101, 8.8.8.8, 8.8.4.4]
+        search: []
+  version: 2

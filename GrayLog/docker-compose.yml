@@ -1,0 +1,33 @@
+version: "3.8"
+
+services:
+  graylog:
+    image: graylog/graylog:4.3
+    environment:
+      GRAYLOG_NODE_ID_FILE: "/usr/share/graylog/data/config/node-id"
+      GRAYLOG_PASSWORD_SECRET: ${GRAYLOG_PASSWORD_SECRET}
+      # default user -> admin
+      GRAYLOG_ROOT_PASSWORD_SHA2: ${GRAYLOG_ROOT_PASSWORD_SHA2}
+      GRAYLOG_HTTP_BIND_ADDRESS: ${GRAYLOG_HTTP_BIND_ADDRESS}
+      GRAYLOG_HTTP_EXTERNAL_URI: ${GRAYLOG_HTTP_EXTERNAL_URI}
+      GRAYLOG_ELASTICSEARCH_HOSTS: ${GRAYLOG_ELASTICSEARCH_HOST}
+      GRAYLOG_MONGODB_URI: ${GRAYLOG_MONGODB_URI}
+    network_mode: bridge
+    ports:
+    - "5044:5044/tcp"   # Beats
+    - "5140:5140/udp"   # Syslog
+    - "5140:5140/tcp"   # Syslog
+    - "5555:5555/tcp"   # RAW TCP
+    - "5555:5555/udp"   # RAW TCP
+    - "9000:9000/tcp"   # Server API
+    - "12201:12201/tcp" # GELF TCP
+    - "12201:12201/udp" # GELF UDP
+    - "13301:13301/tcp" # Forwarder data
+    - "13302:13302/tcp" # Forwarder config
+    volumes:
+      - "graylog_data:/usr/share/graylog/data/data"
+      - "graylog_journal:/usr/share/graylog/data/journal"
+    restart: "on-failure"
+volumes:
+  graylog_data:
+  graylog_journal:
