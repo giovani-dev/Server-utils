@@ -6,13 +6,11 @@ services:
     environment:
       GRAYLOG_NODE_ID_FILE: "/usr/share/graylog/data/config/node-id"
       GRAYLOG_PASSWORD_SECRET: ${GRAYLOG_PASSWORD_SECRET}
-      # default user -> admin
       GRAYLOG_ROOT_PASSWORD_SHA2: ${GRAYLOG_ROOT_PASSWORD_SHA2}
       GRAYLOG_HTTP_BIND_ADDRESS: ${GRAYLOG_HTTP_BIND_ADDRESS}
       GRAYLOG_HTTP_EXTERNAL_URI: ${GRAYLOG_HTTP_EXTERNAL_URI}
       GRAYLOG_ELASTICSEARCH_HOSTS: ${GRAYLOG_ELASTICSEARCH_HOST}
       GRAYLOG_MONGODB_URI: ${GRAYLOG_MONGODB_URI}
-    network_mode: bridge
     ports:
     - "5044:5044/tcp"   # Beats
     - "5140:5140/udp"   # Syslog
@@ -28,6 +26,17 @@ services:
       - "graylog_data:/usr/share/graylog/data/data"
       - "graylog_journal:/usr/share/graylog/data/journal"
     restart: "on-failure"
+  nginx:
+    image: nginx:latest
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./certificate/nginx-certificate.crt:/etc/nginx/certificate/nginx-certificate.crt
+      - ./certificate/nginx.key:/etc/nginx/certificate/nginx.key
+    depends_on:
+      - graylog
 volumes:
   graylog_data:
   graylog_journal:
