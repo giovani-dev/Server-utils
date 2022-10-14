@@ -37,6 +37,7 @@ services:
       - ./certificate/nginx.key:/etc/nginx/certificate/nginx.key
     depends_on:
       - graylog
+    restart: "always"
 volumes:
   graylog_data:
   graylog_journal:
