@@ -32,3 +32,5 @@
 *.txz
 
 *.env
+*.crt
+*.key
